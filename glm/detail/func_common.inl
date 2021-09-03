@@ -16,7 +16,7 @@ namespace glm
 	template<typename genType>
 	GLM_FUNC_QUALIFIER GLM_CONSTEXPR genType min(genType x, genType y)
 	{
-		GLM_STATIC_ASSERT(std::numeric_limits<genType>::is_iec559 || std::numeric_limits<genType>::is_integer, "'min' only accept floating-point or integer inputs");
+        GLM_STATIC_ASSERT(std::numeric_limits<genType>::is_iec559 || std::numeric_limits<genType>::is_integer || GLM_CONFIG_UNRESTRICTED_GENTYPE, "'min' only accept floating-point or integer inputs");
 		return (y < x) ? y : x;
 	}
 
@@ -24,7 +24,7 @@ namespace glm
 	template<typename genType>
 	GLM_FUNC_QUALIFIER GLM_CONSTEXPR genType max(genType x, genType y)
 	{
-		GLM_STATIC_ASSERT(std::numeric_limits<genType>::is_iec559 || std::numeric_limits<genType>::is_integer, "'max' only accept floating-point or integer inputs");
+        GLM_STATIC_ASSERT(std::numeric_limits<genType>::is_iec559 || std::numeric_limits<genType>::is_integer || GLM_CONFIG_UNRESTRICTED_GENTYPE, "'max' only accept floating-point or integer inputs");
 
 		return (x < y) ? y : x;
 	}
@@ -213,7 +213,7 @@ namespace detail
 	{
 		GLM_FUNC_QUALIFIER static vec<L, T, Q> call(vec<L, T, Q> const& a, vec<L, T, Q> const& b)
 		{
-			GLM_STATIC_ASSERT(std::numeric_limits<T>::is_iec559, "'mod' only accept floating-point inputs. Include <glm/gtc/integer.hpp> for integer inputs.");
+            GLM_STATIC_ASSERT(std::numeric_limits<T>::is_iec559 || GLM_CONFIG_UNRESTRICTED_GENTYPE, "'mod' only accept floating-point inputs. Include <glm/gtc/integer.hpp> for integer inputs.");
 			return a - b * floor(a / b);
 		}
 	};
@@ -284,7 +284,7 @@ namespace detail
 	GLM_FUNC_QUALIFIER genFIType sign(genFIType x)
 	{
 		GLM_STATIC_ASSERT(
-			std::numeric_limits<genFIType>::is_iec559 || (std::numeric_limits<genFIType>::is_signed && std::numeric_limits<genFIType>::is_integer),
+            std::numeric_limits<genFIType>::is_iec559 || (std::numeric_limits<genFIType>::is_signed && std::numeric_limits<genFIType>::is_integer) || GLM_CONFIG_UNRESTRICTED_GENTYPE,
 			"'sign' only accept signed inputs");
 
 		return detail::compute_sign<1, genFIType, defaultp,
@@ -295,7 +295,7 @@ namespace detail
 	GLM_FUNC_QUALIFIER vec<L, T, Q> sign(vec<L, T, Q> const& x)
 	{
 		GLM_STATIC_ASSERT(
-			std::numeric_limits<T>::is_iec559 || (std::numeric_limits<T>::is_signed && std::numeric_limits<T>::is_integer),
+            std::numeric_limits<T>::is_iec559 || (std::numeric_limits<T>::is_signed && std::numeric_limits<T>::is_integer) || GLM_CONFIG_UNRESTRICTED_GENTYPE,
 			"'sign' only accept signed inputs");
 
 		return detail::compute_sign<L, T, Q, std::numeric_limits<T>::is_iec559, detail::is_aligned<Q>::value>::call(x);
